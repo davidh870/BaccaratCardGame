@@ -36,14 +36,23 @@ class DealerTest extends BaccaratGame{
 
 	@Test
 	void testType() {
-		//Dealer.deck.add(new Card("A", 1));
-//		Dealer.generateDeck();
-//		assertEquals(52, Dealer.Decksize(), "Incorrect deck size");
 		assertEquals("BaccaratDealer", Dealer.getClass().getName(), "Incorrect class");
 	}
 
+	@Test
+	void deckTest() {
+		Dealer.generateDeck();
+		assertEquals(52, Dealer.Decksize(), "Incorrect deck size");
+	}
 
-
+	@Test
+	void shuffleTest() {
+		Dealer.generateDeck();
+		Dealer.shuffleDeck();
+		BaccaratDealer newDealer = new BaccaratDealer();
+		newDealer.generateDeck();
+		assertNotEquals(newDealer.deck.get(0), Dealer.deck.get(0), "not shuffled maybe");
+	}
 
 	@Test
 	void newCardTest() {
@@ -54,38 +63,35 @@ class DealerTest extends BaccaratGame{
 	//Draw tests also made to test Dealhand since it is difficult use assertEquals to test random draws
 	@Test
 	void drawTest() {
-		Dealer.deck.add(new BaccaratGame.Card());
+		Dealer.deck.add(new BaccaratGame.Card("S",8));
 		assertEquals(0, bankerHand.size(), "not empty");
 		bankerHand.add(Dealer.drawOne());
-		assertEquals(-1, bankerHand.get(0).value, "not correct card");
+		assertEquals(8, bankerHand.get(0).value, "not correct card");
+		assertEquals("S", bankerHand.get(0).suite, "not correct card");
 	}
 
 	@Test
 	void drawTest1() {
-		Dealer.deck.add(new BaccaratGame.Card());
+		Dealer.deck.add(new BaccaratGame.Card("H",5));
 		playerHand.add(Dealer.drawOne());
-		assertEquals(-1, playerHand.get(0).value, "not correct card");
-		Dealer.deck.add(new BaccaratGame.Card());
+		assertEquals(5, playerHand.get(0).value, "not correct card");
+		assertEquals("H", playerHand.get(0).suite, "not correct card");
+		Dealer.deck.add(new BaccaratGame.Card("D",2));
 		playerHand.add(Dealer.drawOne());
-		assertEquals(-1, playerHand.get(1).value, "not correct card");
+		assertEquals(2, playerHand.get(1).value, "not correct card");
+		assertEquals("D", playerHand.get(1).suite, "not correct card");
+
 	}
-//
-//	@Test
-//	void dealHandTest() {
-//		playerHand = Dealer.dealHand();
-//		bankerHand = Dealer.dealHand();
-//		assertEquals(2, playerHand.size(), "not correct length");
-//		assertEquals(2, bankerHand.size(), "not correct length");
-//	}
-//
-//	@Test
-//	void resetTest() {
-//		playerHand = Dealer.dealHand();
-//		bankerHand = Dealer.dealHand();
-//		theDealer.resetCards();
-//		assertEquals(0, playerHand.size(), "not empty");
-//		assertEquals(0, bankerHand.size(), "not empty");
-//	}
+
+	@Test
+	void dealHandTest() {
+		Dealer.generateDeck();
+		playerHand = Dealer.dealHand();
+		bankerHand = Dealer.dealHand();
+		assertEquals(2, playerHand.size(), "not correct length");
+		assertEquals(2, bankerHand.size(), "not correct length");
+	}
+
 
 
 }
